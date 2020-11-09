@@ -1,18 +1,39 @@
 #=====Psuedocode=====
-# 
-#
-#
+# 1. Create UI with knight and gameboard 
+# 2. Possible moves are node children in a tree 
+#     - The user chooses the starting point and end point
+# 3. Use a search algorithm to traverse the tree 
+# 4. Use the search algorithm to find the shortest path to the ending point  
+
+#=====Guide to node names=====
+# The nodes 1-8 represent the possible outcomes move for the knight
+# The possible nodes start on the top left and work clockwise around the knight 
+# In the board below, [2,5] would be possibility one, [3,6] would be possibility two, and so on 
+# "8___|___|___|___|___|___|___|___|"
+# "7___|___|___|___|___|___|___|___|"
+# "6___|___|_*_|___|_*_|___|___|___|"
+# "5___|_*_|___|___|___|_*_|___|___|"
+# "4___|___|___|_X_|___|___|___|___|"
+# "3___|_*_|___|___|___|_*_|___|___|"
+# "2___|___|_*_|___|_*_|___|___|___|"
+# "1___|___|___|___|___|___|___|___|"
+# "  1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |"
+
+
 
 class Node
-  attr_accessor :position,
+  attr_accessor :position, :one, :two, :three, :four, :five, :six, :seven, :eight
   def initialize(position)
     @position = position 
+    #See header comments "guide to node names"
     @one = nil
     @two = nil
     @three = nil
     @four = nil
     @five = nil
     @six = nil
+    @seven = nil
+    @eight = nil 
   end 
 end 
 
@@ -52,8 +73,7 @@ class Gameboard
     if choice > 3 || choice < 1
       "Please make a valid selection. Enter 1, 2, or 3"
     elsif choice == 1 
-      #new_game
-      puts "NEW GAME INITIALIZING......"
+      PlayGame.new
     elsif choice == 2
     
     puts "********START HERE*******"
@@ -95,6 +115,79 @@ class Gameboard
       return 
     end 
   end 
+end 
+
+
+class PlayGame 
+  def initialize
+    get_move
+  end 
+
+  def get_move
+    puts "What is your starting point?"
+    start_point = gets.chomp 
+    puts "What is your ending point?"
+    target_point = gets.chomp
+    clean_values(start_point, target_point)
+    
+  end 
+
+  def clean_values(start_point, target_point)
+    start_arr = start_point.split(",")
+    start = start_arr.map{|x| x.to_i }
+
+    target_arr = target_point.split(",")
+    target = target_arr.map{|x| x.to_i }
+    possible_outcomes(start, target)
+  end 
+
+  def possible_outcomes(start, target, counter = 0)
+    knight = Node.new(start)
+    p knight.position
+    counter += 1
+    
+    return if counter == 2
+    
+    if start[0] == 8 
+      if start[1] == 8
+        knight.seven = possible_outcomes([start[0]-1, start[1]-2], target, counter)
+        knight.eight = possible_outcomes([start[0]-2, start[1]-1], target, counter)
+      elsif start[1] == 1
+        knight.one = possible_outcomes([start[0]-1, start[1]+2], target, counter) 
+        knight.two = possible_outcomes([start[0]+1, start[1]+2], target, counter) 
+      else 
+        knight.one = possible_outcomes([start[0]-1, start[1]+2], target, counter)  
+        knight.two = possible_outcomes([start[0]+1, start[1]+2], target, counter) 
+        knight.seven = possible_outcomes([start[0]-1, start[1]-2], target, counter) 
+        knight.eight = possible_outcomes([start[0]-2, start[1]-1], target, counter) 
+      end 
+    elsif start[0] == 1
+      if start[1] == 8
+        knight.five = possible_outcomes([start[0]+2, start[1]-1], target, counter) 
+        knight.six = possible_outcomes([start[0]+1, start[1]-2], target, counter) 
+
+      elsif start[1] == 1
+        knight.three = possible_outcomes([start[0]+1, start[1]+2], target, counter) 
+        knight.four = possible_outcomes([start[0]+2, start[1]+1], target, counter) 
+      else 
+        knight.one = possible_outcomes([start[0]-1, start[1]+2], target, counter) 
+        knight.two = possible_outcomes([start[0]-1, start[1]+2], target, counter) 
+        knight.seven = possible_outcomes([start[0]-1, start[1]-2], target, counter) 
+        knight.eight = possible_outcomes([start[0]-2, start[1]-1], target, counter) 
+      end
+    else 
+      knight.one = possible_outcomes([start[0]-1, start[1]+2], target, counter)
+      knight.two = possible_outcomes([start[0]-1, start[1]+2], target, counter)
+      knight.three = possible_outcomes([start[0]+1, start[1]+2], target, counter)
+      knight.four = possible_outcomes([start[0]+2, start[1]+1], target, counter)
+      knight.five = possible_outcomes([start[0]+2, start[1]-1], target, counter)
+      knight.six = possible_outcomes([start[0]+1, start[1]-2], target, counter)
+      knight.seven = possible_outcomes([start[0]-1, start[1]-2], target, counter)
+      knight.eight = possible_outcomes([start[0]-2, start[1]-1], target, counter)
+    end
+    return knight
+  end 
+
 
 end 
 

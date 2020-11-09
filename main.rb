@@ -8,14 +8,14 @@
 #=====Guide to node names=====
 # The nodes 1-8 represent the possible outcomes move for the knight
 # The possible nodes start on the top left and work clockwise around the knight 
-# In the board below, [2,5] would be possibility one, [3,6] would be possibility two, and so on 
+# In the board below, [2,5] would be possibility 1, [3,6] would be possibility 2, and so on 
 # "8___|___|___|___|___|___|___|___|"
 # "7___|___|___|___|___|___|___|___|"
-# "6___|___|_*_|___|_*_|___|___|___|"
-# "5___|_*_|___|___|___|_*_|___|___|"
+# "6___|___|_2_|___|_3_|___|___|___|"
+# "5___|_1_|___|___|___|_4_|___|___|"
 # "4___|___|___|_X_|___|___|___|___|"
-# "3___|_*_|___|___|___|_*_|___|___|"
-# "2___|___|_*_|___|_*_|___|___|___|"
+# "3___|_8_|___|___|___|_5_|___|___|"
+# "2___|___|_7_|___|_6_|___|___|___|"
 # "1___|___|___|___|___|___|___|___|"
 # "  1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |"
 
@@ -55,15 +55,15 @@ class Gameboard
   end 
 
   def game_board
-    puts "8___|___|___|___|___|___|___|___|"
-    puts "7___|___|___|___|___|___|___|___|"
-    puts "6___|___|___|___|___|___|___|___|"
-    puts "5___|___|___|___|___|___|___|___|"
-    puts "4___|___|___|___|___|___|___|___|"
-    puts "3___|___|___|___|___|___|___|___|"
-    puts "2___|___|___|___|___|___|___|___|"
-    puts "1___|___|___|___|___|___|___|___|"
-    puts "  1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |"
+    puts "8|___|___|___|___|___|___|___|___|"
+    puts "7|___|___|___|___|___|___|___|___|"
+    puts "6|___|___|___|___|___|___|___|___|"
+    puts "5|___|___|___|___|___|___|___|___|"
+    puts "4|___|___|___|___|___|___|___|___|"
+    puts "3|___|___|___|___|___|___|___|___|"
+    puts "2|___|___|___|___|___|___|___|___|"
+    puts "1|___|___|___|___|___|___|___|___|"
+    puts "   1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |"
   end 
 
   def start_options
@@ -75,8 +75,14 @@ class Gameboard
     elsif choice == 1 
       PlayGame.new
     elsif choice == 2
-    
-    puts "********START HERE*******"
+      demonstration 
+      start_options
+    elsif choice == 3
+      return 
+    end 
+  end 
+
+  def demonstration 
     puts "First you will choose your starting point. Let's select [4,4]. You knight is shown on [4,4] with an 'X'.
     Next, you will choose your desired ending point. For demonstrative purposes, we will choose [3,3].
     From your starting point, your knight can move in an L-shape. That means they can move 2 blocks in any
@@ -84,36 +90,32 @@ class Gameboard
     From [4,4], the possible outcomes for the next move are marked with '*'.
     
     \n\n"
-    puts "8___|___|___|___|___|___|___|___|"
-    puts "7___|___|___|___|___|___|___|___|"
-    puts "6___|___|_*_|___|_*_|___|___|___|"
-    puts "5___|_*_|___|___|___|_*_|___|___|"
-    puts "4___|___|___|_X_|___|___|___|___|"
-    puts "3___|_*_|___|___|___|_*_|___|___|"
-    puts "2___|___|_*_|___|_*_|___|___|___|"
-    puts "1___|___|___|___|___|___|___|___|"
-    puts "  1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |"
+    puts "8|___|___|___|___|___|___|___|___|"
+    puts "7|___|___|___|___|___|___|___|___|"
+    puts "6|___|___|_*_|___|_*_|___|___|___|"
+    puts "5|___|_*_|___|___|___|_*_|___|___|"
+    puts "4|___|___|___|_X_|___|___|___|___|"
+    puts "3|___|_*_|___|___|___|_*_|___|___|"
+    puts "2|___|___|_*_|___|_*_|___|___|___|"
+    puts "1|___|___|___|___|___|___|___|___|"
+    puts "   1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |"
 
     puts "\n\nIf we travel to [2,5] next, we can get
     to our target of [3,3] in 2 moves. [3,3] is marked with 'O'.
     \n\n"
-    puts "8___|___|___|___|___|___|___|___|"
-    puts "7_*_|___|_*_|___|___|___|___|___|"
-    puts "6___|___|___|_*_|___|___|___|___|"
-    puts "5___|_X_|___|___|___|___|___|___|"
-    puts "4___|___|___|_*_|___|___|___|___|"
-    puts "3_*_|___|_O_|___|___|___|___|___|"
-    puts "2___|___|___|___|___|___|___|___|"
-    puts "1___|___|___|___|___|___|___|___|"
-    puts "  1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |"
+    puts "8|___|___|___|___|___|___|___|___|"
+    puts "7|_*_|___|_*_|___|___|___|___|___|"
+    puts "6|___|___|___|_*_|___|___|___|___|"
+    puts "5|___|_X_|___|___|___|___|___|___|"
+    puts "4|___|___|___|_*_|___|___|___|___|"
+    puts "3|_*_|___|_O_|___|___|___|___|___|"
+    puts "2|___|___|___|___|___|___|___|___|"
+    puts "1|___|___|___|___|___|___|___|___|"
+    puts "   1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |"
 
     puts "\n\n
     When you enter your starting and ending point, the computer will tell you the most 
     efficient route and count the least possible moves for you. Let's play!!\n\n"
-    start_options
-    elsif choice == 3
-      return 
-    end 
   end 
 end 
 
@@ -128,6 +130,7 @@ class PlayGame
     start_point = gets.chomp 
     puts "What is your ending point?"
     target_point = gets.chomp
+
     clean_values(start_point, target_point)
     
   end 
@@ -141,49 +144,60 @@ class PlayGame
     possible_outcomes(start, target)
   end 
 
-  def possible_outcomes(start, target, counter = 0)
+  def possible_outcomes(start, target, counter = 0, arr = [])
     knight = Node.new(start)
-    p knight.position
-    counter += 1
-    
-    return if counter == 2
-    
-    if start[0] == 8 
-      if start[1] == 8
-        knight.seven = possible_outcomes([start[0]-1, start[1]-2], target, counter)
-        knight.eight = possible_outcomes([start[0]-2, start[1]-1], target, counter)
-      elsif start[1] == 1
-        knight.one = possible_outcomes([start[0]-1, start[1]+2], target, counter) 
-        knight.two = possible_outcomes([start[0]+1, start[1]+2], target, counter) 
-      else 
-        knight.one = possible_outcomes([start[0]-1, start[1]+2], target, counter)  
-        knight.two = possible_outcomes([start[0]+1, start[1]+2], target, counter) 
-        knight.seven = possible_outcomes([start[0]-1, start[1]-2], target, counter) 
-        knight.eight = possible_outcomes([start[0]-2, start[1]-1], target, counter) 
-      end 
-    elsif start[0] == 1
-      if start[1] == 8
-        knight.five = possible_outcomes([start[0]+2, start[1]-1], target, counter) 
-        knight.six = possible_outcomes([start[0]+1, start[1]-2], target, counter) 
+    arr << start
+    counter+= 1
 
-      elsif start[1] == 1
-        knight.three = possible_outcomes([start[0]+1, start[1]+2], target, counter) 
-        knight.four = possible_outcomes([start[0]+2, start[1]+1], target, counter) 
+    
+    return knight.position if start == target
+    if start[0] >= 8 
+      if start[1] >= 8
+        knight.seven = possible_outcomes([start[0]-1, start[1]-2], target, counter, arr)
+        knight.eight = possible_outcomes([start[0]-2, start[1]-1], target, counter, arr)
+      elsif start[1] <= 1
+        knight.one = possible_outcomes([start[0]-2, start[1]+2], target, counter, arr)
+        knight.two = possible_outcomes([start[0]-1, start[1]+2], target, counter, arr)
       else 
-        knight.one = possible_outcomes([start[0]-1, start[1]+2], target, counter) 
-        knight.two = possible_outcomes([start[0]-1, start[1]+2], target, counter) 
-        knight.seven = possible_outcomes([start[0]-1, start[1]-2], target, counter) 
-        knight.eight = possible_outcomes([start[0]-2, start[1]-1], target, counter) 
+        knight.one = possible_outcomes([start[0]-2, start[1]+2], target, counter, arr)
+        knight.two = possible_outcomes([start[0]-1, start[1]+2], target, counter, arr)
+        knight.seven = possible_outcomes([start[0]-1, start[1]-2], target, counter, arr)
+        knight.eight = possible_outcomes([start[0]-2, start[1]-1], target, counter, arr)
+      end 
+    elsif start[0] <= 1
+      if start[1] >= 8
+        knight.five = possible_outcomes([start[0]+2, start[1]-1], target, counter, arr)
+        knight.six = possible_outcomes([start[0]+1, start[1]-2], target, counter, arr)
+      elsif start[1] <= 1
+        knight.three = possible_outcomes([start[0]+1, start[1]+2], target, counter, arr)
+        knight.four = possible_outcomes([start[0]+2, start[1]+1], target, counter, arr)
+      else
+        knight.three = possible_outcomes([start[0]+1, start[1]+2], target, counter, arr)
+        knight.four = possible_outcomes([start[0]+2, start[1]+1], target, counter, arr)
+        knight.five = possible_outcomes([start[0]+2, start[1]-1], target, counter, arr)
+        knight.six = possible_outcomes([start[0]+1, start[1]-2], target, counter, arr)
       end
     else 
-      knight.one = possible_outcomes([start[0]-1, start[1]+2], target, counter)
-      knight.two = possible_outcomes([start[0]-1, start[1]+2], target, counter)
-      knight.three = possible_outcomes([start[0]+1, start[1]+2], target, counter)
-      knight.four = possible_outcomes([start[0]+2, start[1]+1], target, counter)
-      knight.five = possible_outcomes([start[0]+2, start[1]-1], target, counter)
-      knight.six = possible_outcomes([start[0]+1, start[1]-2], target, counter)
-      knight.seven = possible_outcomes([start[0]-1, start[1]-2], target, counter)
-      knight.eight = possible_outcomes([start[0]-2, start[1]-1], target, counter)
+      if start[1] >= 8
+        knight.five = possible_outcomes([start[0]+2, start[1]-1], target, counter, arr)
+        knight.six = possible_outcomes([start[0]+1, start[1]-2], target, counter, arr)
+        knight.seven = possible_outcomes([start[0]-1, start[1]-2], target, counter, arr)
+        knight.eight = possible_outcomes([start[0]-2, start[1]-1], target, counter, arr)
+      elsif start[1] <= 1
+        knight.one = possible_outcomes([start[0]-2, start[1]+2], target, counter, arr)
+        knight.two = possible_outcomes([start[0]-1, start[1]+2], target, counter, arr)
+        knight.three = possible_outcomes([start[0]+1, start[1]+2], target, counter, arr)
+        knight.four = possible_outcomes([start[0]+2, start[1]+1], target, counter, arr)
+      else 
+        knight.one = possible_outcomes([start[0]-2, start[1]+2], target, counter, arr)
+        knight.two = possible_outcomes([start[0]-1, start[1]+2], target, counter, arr)
+        knight.three = possible_outcomes([start[0]+1, start[1]+2], target, counter, arr)
+        knight.four = possible_outcomes([start[0]+2, start[1]+1], target, counter, arr)
+        knight.five = possible_outcomes([start[0]+2, start[1]-1], target, counter, arr)
+        knight.six = possible_outcomes([start[0]+1, start[1]-2], target, counter, arr)
+        knight.seven = possible_outcomes([start[0]-1, start[1]-2], target, counter, arr)
+        knight.eight = possible_outcomes([start[0]-2, start[1]-1], target, counter, arr)
+      end 
     end
     return knight
   end 
@@ -192,4 +206,12 @@ class PlayGame
 end 
 
 knight = Gameboard.new
-knight 
+
+# knight.one = possible_outcomes([start[0]-1, start[1]+2], target, counter, arr)
+# knight.two = possible_outcomes([start[0]-1, start[1]+2], target, counter, arr)
+# knight.three = possible_outcomes([start[0]+1, start[1]+2], target, counter, arr)
+# knight.four = possible_outcomes([start[0]+2, start[1]+1], target, counter, arr)
+# knight.five = possible_outcomes([start[0]+2, start[1]-1], target, counter, arr)
+# knight.six = possible_outcomes([start[0]+1, start[1]-2], target, counter, arr)
+# knight.seven = possible_outcomes([start[0]-1, start[1]-2], target, counter, arr)
+# knight.eight = possible_outcomes([start[0]-2, start[1]-1], target, counter, arr)

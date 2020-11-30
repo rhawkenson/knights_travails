@@ -32,6 +32,7 @@ class KnightsTravails
   end 
 
   def build_board
+    return if preorder.include?(@target)
     child1_move = [@start[0]-2, @start[1]+1] 
     child2_move = [@start[0]-1, @start[1]+2]
     child3_move = [@start[0]+1, @start[1]+2]

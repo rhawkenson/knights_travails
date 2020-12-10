@@ -10,6 +10,8 @@ This project is designed to test the learner's knowledge of recursion and binary
       - All possible squares on the board are given in an array
       - The gameboard is an 8x8 chessboard, starting a 1 and ending at 8
 
+    #another_method
+      -This is informative
 ### Class Knight 
   #### Methods 
     #valid

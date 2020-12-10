@@ -1,13 +1,11 @@
 # Knight's Travails 
-## from: https://www.theodinproject.com
+#### from: https://www.theodinproject.com
 _______________________________________________________________
 
-### Classes:
-
-### Board
+### Class Board
   #### Methods: 
-### Knight 
+### Class Knight 
   #### Methods:
-### PlayGame
+### Class PlayGame
   #### Methods:
   

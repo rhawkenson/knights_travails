@@ -1,57 +1,68 @@
 require_relative 'board'
 
 class Knight 
-  attr_accessor :data, :children
+  attr_accessor :data, :children, :parent
   def initialize(data)
-    @parent = nil
     @data = data
+    @parent = nil
     @children = Array.new
   end 
 end 
 
-class PlayGame
+class Pathway
   attr_accessor :knight 
-  attr_reader :target
-
+  attr_reader :target, :start
   def initialize(start, target)
     return game_over if start == target
     @knight = Knight.new(start)
+    @start = start
     @target = target
-    moves(start)
+    
+    get_children(start)
+    children_to_nodes()
   end 
 
+  # Validates nodes so they can only be squares on the board
   def valid(move)
     validate = [1,2,3,4,5,6,7,8].repeated_permutation(2).to_a
     validate.include?(move) ? true : false
   end 
 
-  def moves(start)
-    x = start[0]
-    y = start[1]
+  #Given a node, returns all legal children of said node
+  def get_children(pos, current=@knight)
+    path = []
+    x = pos[0]
+    y = pos[1]
     move_math = [[x-2,y+1],[x-1,y+2],[x+1,y+2],[x+2,y+1],[x+2,y-1],[x+1,y-2],[x-1,y-2],[x-2,y-1]]
-    
-    #Evaluate if the move is legal
     move_math.each do |move|
-      #valid(move)? @knight.children << move : nil 
-      @knight.children << move  
+      valid(move)? current.children << move : nil 
     end
-    #if the target has been found, end the cycle. Otherwise, go to #branch to become a node
-    @knight.children.include?(@target) ? game_over : nil
+    current.children
   end
 
-  def search(children, visited)
-   
+  #turns children into nodes with their own parents and children
+  def children_to_nodes(current = @knight, visited=[]) 
+    current.children.each do |child|
+      child = Knight.new(child)
+      #child.parent = current ================================uncomment later when you need access to child
+      child.children = get_children(child.data, child)
+      visited << child.data
+      next_method(child, visited)
+    end 
+  end
+
+  #visited and queue to look for the target 
+  def next_method(current, visited)
+    p current
   end 
 
-  def game_over
-    puts "\n\n\n\nGAME OVER\n\n\n\n\n"
-  end 
+
 end 
 
 def knight_moves(start, target)
   return "done" if start == target
-  validate = Array.new(8){|x| x+1}.repeated_combination(2).to_a
-  validate.include?(start) && validate.include?(target) ? PlayGame.new(start, target) : "Invalid entry"
+  validate = [1,2,3,4,5,6,7,8].repeated_permutation(2).to_a
+  validate.include?(start) && validate.include?(target) ? Pathway.new(start, target) : "Invalid entry"
 end 
 
 knight_moves([3,3],[2,6])

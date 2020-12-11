@@ -13,13 +13,11 @@ class Pathway
   attr_accessor :knight 
   attr_reader :target, :start
   def initialize(start, target)
-    return game_over if start == target
     @knight = Knight.new(start)
     @start = start
     @target = target
-    
     get_children(start)
-    children_to_nodes()
+    children_to_nodes
   end 
 
   # Validates nodes so they can only be squares on the board
@@ -29,7 +27,7 @@ class Pathway
   end 
 
   #Given a node, returns all legal children of said node
-  def get_children(pos, current=@knight)
+  def get_children(pos, current=@knight, visited=[])
     path = []
     x = pos[0]
     y = pos[1]
@@ -41,21 +39,26 @@ class Pathway
   end
 
   #turns children into nodes with their own parents and children
-  def children_to_nodes(current = @knight, visited=[]) 
+  def children_to_nodes(current=@knight, visited=[])  
     current.children.each do |child|
-      child = Knight.new(child)
-      #child.parent = current ================================uncomment later when you need access to child
-      child.children = get_children(child.data, child)
-      visited << child.data
-      next_method(child, visited)
-    end 
+      return if visited.include?(@target)
+      @child = Knight.new(child)
+      @child.parent = current #====================uncomment later when you need access to parent data
+      @child.children = get_children(@child.data, @child)
+      visited << @child.data
+      current = @child
+      children_to_nodes(current, visited) unless visited.include?(@target)
+      p visited
+      #evaluate(visited, current)
+    end
   end
 
-  #visited and queue to look for the target 
-  def next_method(current, visited)
-    p current
+  #visited and queue to look for the target
+  def evaluate(visited, current)
+    if visited.include?(@target)
+      puts "#{@target} found in visited, #{visited}"
+    end 
   end 
-
 
 end 
 
@@ -65,5 +68,5 @@ def knight_moves(start, target)
   validate.include?(start) && validate.include?(target) ? Pathway.new(start, target) : "Invalid entry"
 end 
 
-knight_moves([3,3],[2,6])
+knight_moves([3,3],[4,3])
 

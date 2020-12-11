@@ -29,3 +29,21 @@ looks like, e.g.:
     [4,3]
 =end
 
+# ==== Code for children of any given node ====
+def valid(move)
+  validate = [1,2,3,4,5,6,7,8].repeated_permutation(2).to_a
+  validate.include?(move) ? true : false
+  
+end
+
+def moves(start)
+  children = []
+  x = start[0]
+  y = start[1]
+  move_math = [[x-2,y+1],[x-1,y+2],[x+1,y+2],[x+2,y+1],[x+2,y-1],[x+1,y-2],[x-1,y-2],[x-2,y-1]]
+
+  move_math.each do |move|
+    valid(move)? children << move : nil  
+  end
+ children
+end 

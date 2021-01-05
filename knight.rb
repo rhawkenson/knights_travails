@@ -28,7 +28,6 @@ class Pathway
 
   #Given a node, returns all legal children of said node
   def get_children(pos, current=@knight, visited=[])
-    path = []
     x = pos[0]
     y = pos[1]
     move_math = [[x-2,y+1],[x-1,y+2],[x+1,y+2],[x+2,y+1],[x+2,y-1],[x+1,y-2],[x-1,y-2],[x-2,y-1]]
@@ -39,23 +38,33 @@ class Pathway
   end
 
   #turns children into nodes with their own parents and children
-  def children_to_nodes(current=@knight, visited=[])  
+  def children_to_nodes(current=@knight, visited=[], queue=[])  
     current.children.each do |child|
       return if visited.include?(@target)
       @child = Knight.new(child)
-      #@child.parent = current #====================uncomment later when you need access to parent data
+      #@child.parent = @knight #====================uncomment later when you need access to parent data
       @child.children = get_children(@child.data, @child)
       visited << @child.data
       current = @child
+      queue << @child.children
       p @child
     end
-    p visited
+    clean_queue = queue.flatten!(1).uniq
+    level(visited, clean_queue)
+
+    p "visited: #{visited}"
+    p "queue: #{clean_queue}"
   end
 
   #visited and queue to look for the target
-  def level(visited)
+  def level(visited, queue=[])
+
+    return "found" if queue.include?(@target)
     
-  end 
+
+  end
+  
+  
 end 
 
 def knight_moves(start, target)

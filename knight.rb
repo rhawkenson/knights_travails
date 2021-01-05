@@ -43,23 +43,19 @@ class Pathway
     current.children.each do |child|
       return if visited.include?(@target)
       @child = Knight.new(child)
-      @child.parent = current #====================uncomment later when you need access to parent data
+      #@child.parent = current #====================uncomment later when you need access to parent data
       @child.children = get_children(@child.data, @child)
       visited << @child.data
       current = @child
-      children_to_nodes(current, visited) unless visited.include?(@target)
-      p visited
-      #evaluate(visited, current)
+      p @child
     end
+    p visited
   end
 
   #visited and queue to look for the target
-  def evaluate(visited, current)
-    if visited.include?(@target)
-      puts "#{@target} found in visited, #{visited}"
-    end 
+  def level(visited)
+    
   end 
-
 end 
 
 def knight_moves(start, target)

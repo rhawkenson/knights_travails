@@ -46,51 +46,55 @@ class Pathway
     4. set the parent and children of the current iteration 
     5. visited concatenates all the children of the current iteration
     6. current is reset to the current iteration #### Possibly unnecessary 
-    7. queue takes in all children 
+    7. queue takes in all unique children 
     8. queue is cleaned up and passed into #level to get the next level of children (grandchildren of root)
 =end
 
 
 #turns children into nodes with their own parents and children
   def children_to_nodes(current=@knight, visited=[], queue=[])  
-    current.children.each do |child|
-      return "found" if visited.include?(@target)
-      @child = Knight.new(child)
-      #@child.parent = @knight #====================uncomment later when you need access to parent data
-      @child.children = get_children(@child.data, @child)
-      visited << @child.data
-      #pre_queue = []
-      #pre_queue << @child.children
-      
-      @child.children.each do |child|
-        queue << child
-      end 
-      p @child
-    end
+    if visited.include?(@target)
+      path(current)
 
-    
-    p "visited: #{visited}"
-    p "Queue: #{queue}"
-    p "current: #{current}, #{current.data}"
-    level(visited, queue)
+    else
+      current.children.each do |child|
+        #return "found" if visited.include?(@target)
+        @child = Knight.new(child)
+        @child.parent = @knight #====================uncomment later when you need access to parent data
+        @child.children = get_children(@child.data, @child)
+        visited << @child.data unless visited.include?(@child.data)
+        
+        @child.children.each do |child|
+          queue << child unless queue.include?(child)
+        end 
+      end
+      level(visited, queue)
+    end 
   end
 
 =begin
   #level breakdown:
-    1. the queue items are not yet nodes
+    1. the queue items are made into nodes
     2. pass the node into #get_children and #children_to_nodes
+    3. visited takes in the first item from queue
+    4. the first item in queue is deleted
 =end
 
 
   #visited and queue to look for the target
   def level(visited, queue=[])
-    return "found" if queue.include?(@target)
     current = Knight.new(queue[0])
+    visited << queue[0] unless visited.include?(queue[0])
+    queue.shift
+    
     get_children(current.data, current)
     children_to_nodes(current, visited, queue)
-    visited << queue[0]
-    queue.shift
   end
+
+  def path(current)
+    p "YOU DID IT! current: #{current}, #{current.data} target: #{target}"
+  end 
+
 
 end 
 
@@ -100,5 +104,5 @@ def knight_moves(start, target)
   validate.include?(start) && validate.include?(target) ? Pathway.new(start, target) : "Invalid entry"
 end 
 
-knight_moves([3,3],[2,2])
+knight_moves([3,3],[4,3])
 

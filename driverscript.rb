@@ -1,49 +1,95 @@
-=begin
-1. Put together a script that creates a game board and a knight.
-  class Board
-    -stores all the possible moves in an array 
-  class Knight
-    -knight can check that the move is included in the possible moves array on Board
-    -knight's position given in x,y values
-    -knight's next moves are it's children (up to 8 total)
-    -to get next move, perform arithmatic on the x,y for each child move
-    
+require_relative 'board'
 
-2. Treat all possible moves the knight could make as children in a tree. 
-Don’t allow any moves to go off the board.
-    -use the Board class to validate the potential moves 
-
-3. Decide which search algorithm is best to use for this case. 
-Hint: one of them could be a potentially infinite series.
-    -include a counter to return the number of moves necessary 
-
-4. Use the chosen search algorithm to find the shortest path between the 
-starting square (or node) and the ending square. Output what that full path 
-looks like, e.g.:
-
- > knight_moves([3,3],[4,3])
-  => You made it in 3 moves!  Here's your path:
-    [3,3]
-    [4,5]
-    [2,4]
-    [4,3]
-=end
-
-# ==== Code for children of any given node ====
-def valid(move)
-  validate = [1,2,3,4,5,6,7,8].repeated_permutation(2).to_a
-  validate.include?(move) ? true : false
-  
-end
-
-def moves(start)
-  children = []
-  x = start[0]
-  y = start[1]
-  move_math = [[x-2,y+1],[x-1,y+2],[x+1,y+2],[x+2,y+1],[x+2,y-1],[x+1,y-2],[x-1,y-2],[x-2,y-1]]
-
-  move_math.each do |move|
-    valid(move)? children << move : nil  
-  end
- children
+class Knight 
+  attr_accessor :data, :children, :parent
+  def initialize(data)
+    @data = data
+    @parent = nil
+    @children = Array.new
+  end 
 end 
+
+class Pathway
+  attr_accessor :knight 
+  attr_reader :target, :start
+  def initialize(start, target)
+    @start = start
+    @target = target
+    @knight = Knight.new(@start)
+    visited = []
+    visited << @knight
+    get_children(@knight.data, @knight)
+    make_nodes(@knight, visited)
+  end 
+
+  # Validates nodes so they can only be squares on the board
+  def valid(move)
+    validate = [1,2,3,4,5,6,7,8].repeated_permutation(2).to_a
+    validate.include?(move) ? true : false
+  end 
+
+  #Given a node, returns all legal children of said node
+  def get_children(pos, current)
+    x = pos[0]
+    y = pos[1]
+    move_math = [[x-2,y+1],[x-1,y+2],[x+1,y+2],[x+2,y+1],[x+2,y-1],[x+1,y-2],[x-1,y-2],[x-2,y-1]]
+    move_math.each do |move|
+      valid(move)? current.children << move : nil 
+    end
+  end
+
+
+#turns children into nodes with their own parents and children
+  def make_nodes(current=@knight, visited=[], queue=[]) 
+    
+    return path(current, queue, visited) if current.children.include?(@target)
+    current.children.each do |child|
+      queue << child
+    end 
+
+    queue.each do |node|
+      child = Knight.new(node)
+      child.parent = current 
+      get_children(child.data, child)
+      visited << child
+    end
+    visited.shift
+    make_nodes(visited[0], visited)
+  end 
+
+
+  def path(current, queue, visited)
+    steps = Array.new
+    steps << @target
+    steps << current.data
+    
+    until current.parent.nil? do 
+      steps << current.parent.data
+      current = current.parent
+    end
+
+    p "You made it in #{steps.length-1} steps!"
+    p steps.reverse
+
+
+    count_steps(current)
+
+  end 
+
+  def count_steps(current, counter=0)
+    until current.parent.nil? do 
+      counter += 1
+      current = current.parent 
+    end
+  end 
+
+# END OF CLASS 
+end 
+
+def knight_moves(start, target)
+  return "done" if start == target
+  validate = [1,2,3,4,5,6,7,8].repeated_permutation(2).to_a
+  validate.include?(start) && validate.include?(target) ? Pathway.new(start, target) : "Invalid entry"
+end 
+
+knight_moves([3,3],[7,3])

@@ -1,4 +1,4 @@
-require_relative 'board'
+
 
 class Knight 
   attr_accessor :data, :children, :parent
@@ -21,7 +21,7 @@ class Pathway
     get_children(@knight.data, @knight)
     make_nodes(@knight, visited)
   end 
-
+private
   # Validates nodes so they can only be squares on the board
   def valid(move)
     validate = [1,2,3,4,5,6,7,8].repeated_permutation(2).to_a
@@ -82,6 +82,7 @@ class Pathway
 # END OF CLASS 
 end 
 
+public
 def knight_moves(start, target)
   return "done" if start == target
   validate = [1,2,3,4,5,6,7,8].repeated_permutation(2).to_a

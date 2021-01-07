@@ -67,13 +67,9 @@ class Pathway
       steps << current.parent.data
       current = current.parent
     end
-
     p "You made it in #{steps.length-1} steps!"
     p steps.reverse
-
-
     count_steps(current)
-
   end 
 
   def count_steps(current, counter=0)

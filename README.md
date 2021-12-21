@@ -8,7 +8,7 @@ This project is designed to test the learner's knowledge of recursion and binary
   1. Create a knight class that generates new nodes
   2. Acquire all possible moves of the current knight's position
   3. Check the possible second moves of the current knight's position for the target
-  4. Begin traversing the possible moves adn their children for the target
+  4. Begin traversing the possible moves and their children for the target
   5. Stop and end the search when the target has been found
 
 ##### Global Method
